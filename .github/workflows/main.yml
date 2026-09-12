@@ -1,19 +1,28 @@
 name: Build Android APK
 on: [push, workflow_dispatch]
+
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - name: Install Buildozer
+      - uses: actions/checkout@v4 # Update kiya v3 se v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5 # Update kiya v4 se v5
+        with:
+          python-version: '3.9'
+
+      - name: Install Dependencies
         run: |
           sudo apt-get update
           sudo apt-get install -y build-essential git python3-pip zip unzip openjdk-17-jdk
           pip3 install buildozer
-      - name: Build APK
+
+      - name: Build with Buildozer
         run: buildozer android debug
+
       - name: Upload APK
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4 # Update kiya v3 se v4 (Yahan error tha)
         with:
           name: discord-gen-apk
           path: bin/*.apk
