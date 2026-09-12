@@ -5,10 +5,10 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4 # Update kiya v3 se v4
+      - uses: actions/checkout@v4
 
       - name: Set up Python
-        uses: actions/setup-python@v5 # Update kiya v4 se v5
+        uses: actions/setup-python@v5
         with:
           python-version: '3.9'
 
@@ -18,11 +18,19 @@ jobs:
           sudo apt-get install -y build-essential git python3-pip zip unzip openjdk-17-jdk
           pip3 install buildozer
 
+      - name: Fix Android SDK Path
+        run: |
+          # Ye step Android SDK ko force-install karta hai taaki Aidl error na aaye
+          export ANDROID_SDK_ROOT=$HOME/.buildozer/android/platform/android-sdk
+          export ANDROID_SDK_TOOLS=$HOME/.buildozer/android/platform/android-sdk-tools
+
       - name: Build with Buildozer
-        run: buildozer android debug
+        run: |
+          # Yahan hum 'accept_sdk_license' use kar rahe hain taaki build ruke nahi
+          buildozer android debug
 
       - name: Upload APK
-        uses: actions/upload-artifact@v4 # Update kiya v3 se v4 (Yahan error tha)
+        uses: actions/upload-artifact@v4
         with:
           name: discord-gen-apk
           path: bin/*.apk
