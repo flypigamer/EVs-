@@ -18,17 +18,10 @@ jobs:
           sudo apt-get install -y build-essential git python3-pip zip unzip openjdk-17-jdk
           pip3 install buildozer
 
-      - name: Install Android SDK Command-line Tools
-        run: |
-          # Ye step Aidl aur build-tools ko manually install karega
-          mkdir -p $HOME/.buildozer/android/platform/android-sdk/cmdline-tools
-          wget https://dl.google.com/android/repository/commandlinetools-linux-9125885_22082021.zip -O cmdline-tools.zip
-          unzip cmdline-tools.zip -d $HOME/.buildozer/android/platform/android-sdk/
-          mv $HOME/.buildozer/android/platform/android-sdk/cmdline-tools/cmdline-tools $HOME/.buildozer/android/platform/android-sdk/cmdline-tools/latest
-          
       - name: Build with Buildozer
         run: |
-          # SDK license accept karne ke liye ye command zaroori hai
+          # Hum Buildozer ko bolenge ki wo khud SDK manage kare 
+          # aur hum manually koi path nahi chedenge
           yes | buildozer android debug
 
       - name: Upload APK
